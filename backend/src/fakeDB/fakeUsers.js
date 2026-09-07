@@ -1,4 +1,4 @@
-const fakeUsers = [
+export let users = [
   {
     id: "1",
     username: "John",
@@ -13,4 +13,4 @@ const fakeUsers = [
   }
 ];
 
-export default fakeUsers;
+export default users;

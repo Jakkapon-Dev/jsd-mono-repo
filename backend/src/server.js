@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { router as apiRoutes } from "./routes/index.js";
+import { connectDB } from "./config/db.js";
 
 dotenv.config();
 
@@ -186,6 +187,19 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
-  console.log(`Server running on PORT:${PORT} 🟢`);
-});
+async function start() {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`Server running on PORT:${PORT} 🟢`);
+    });
+  } catch (err) {
+    console.error("Failed to connect to MongoDB", err.message);
+    process.exit(1);
+  }
+}
+
+start();
+
+

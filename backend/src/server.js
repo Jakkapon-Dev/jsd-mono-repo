@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { router as apiRoutes } from "./routes/index.js";
 import { connectDB } from "./config/db.js";
+import { connectSupabase } from "./config/supabase.js";
 
 dotenv.config();
 
@@ -189,13 +190,19 @@ const PORT = process.env.PORT || 3001;
 
 async function start() {
   try {
-    await connectDB();
+    await connectSupabase();
+
+    try {
+      await connectDB();
+    } catch (mongoErr) {
+      console.warn("⚠️ MongoDB connection warning:", mongoErr.message);
+    }
 
     app.listen(PORT, () => {
       console.log(`Server running on PORT:${PORT} 🟢`);
     });
   } catch (err) {
-    console.error("Failed to connect to MongoDB", err.message);
+    console.error("Failed to connect to the database:", err.message);
     process.exit(1);
   }
 }

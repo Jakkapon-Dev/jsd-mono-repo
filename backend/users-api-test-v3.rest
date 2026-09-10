@@ -1,0 +1,69 @@
+### Variable definitions
+@baseUrl = http://localhost:3001/api/v3
+@userId = replace-with-actual-id-from-post-response
+
+#################################################
+### V3 Supabase CRUD Routes (/api/v3/users)   ###
+#################################################
+
+### 1. [v3] Get all users from Supabase
+GET {{baseUrl}}/users
+
+### 2. [v3] Create user (Success -> 201)
+# @name createUser
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "Somchddddai",
+  "email": "somchai.suse@example.com",
+  "password": "secretpa"
+}
+
+### 3. [v3] Create another user (Success -> 201)
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "Jane Doe",
+  "email": "jane.doe@example.com",
+  "password": "pass1234secure"
+}
+
+### 4. [v3] Create user (Validation Error: missing fields -> 400)
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "Incomplete User"
+}
+
+### 5. [v3] Create user (Duplicate email error -> 409)
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+  "username": "Somchai Duplicate",
+  "email": "somchai.supabase@example.com",
+  "password": "secretpassword123"
+}
+
+### 6. [v3] Get user by ID (Success)
+# Copy UUID from the response of step 2 or replace below
+GET {{baseUrl}}/users/{{userId}}
+
+### 7. [v3] Get user by ID (Not Found -> 404)
+GET {{baseUrl}}/users/4df14aaa-5a41-408b-af69-99c56cf11bc4
+
+### 8. [v3] Update user by ID (Success -> 200)
+PUT {{baseUrl}}/users/{{userId}}
+Content-Type: application/json
+
+{
+  "username": "Somchai Updated",
+  "email": "somchai.supabase@example.com",
+  "password": "newpassword456"
+}
+
+### 9. [v3] Delete user by ID (Success -> 200)
+DELETE {{baseUrl}}/users/4df14aaa-5a41-408b-af69-99c56cf11bc4
